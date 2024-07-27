@@ -18,7 +18,6 @@
 		onUpdated: ({ form }) => {
 			if (form.message) {
 				if (form.message.status === 'success') {
-					console.log(form.message.text);
 					trigger(form.message.text);
 				}
 			}
@@ -133,6 +132,3 @@
 >
 	{$message}
 </Toast>
-
-<style>
-</style>

@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Button, Input, Label, NumberInput, Radio } from 'flowbite-svelte';
+	import { Button, Input, Label, NumberInput, Radio, Toast } from 'flowbite-svelte';
 	import ColorPicker from 'svelte-awesome-color-picker';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { MessageStatus } from '../../../../types/index.js';
 	import Title from '../../../../cores/Title/index.svelte';
 	import AppTextInput from '../../../../cores/Form/AppTextInput.svelte';
+	import { slide } from 'svelte/transition';
+	import { useToast } from '$lib/toast.js';
 	export let data;
 
-	const { form, enhance, errors, submitting } = superForm(data.form, {
+	const { trigger, toastStatus, message } = useToast();
+
+	const { form, enhance, submitting } = superForm(data.form, {
 		taintedMessage: false,
 		onUpdated(props) {
 			const { form } = props;
@@ -17,9 +21,10 @@
 				{
 					(async () => {
 						await invalidate('app:projects');
-						if (form.message?.type === 'delete') {
-							await goto('/projects');
+						if (form.message?.text) {
+							trigger(form.message.text);
 						}
+						await goto('/projects');
 					})();
 				}
 			}
@@ -102,3 +107,13 @@
 		</div>
 	</form>
 </section>
+
+<Toast
+	dismissable={true}
+	position="top-right"
+	transition={slide}
+	bind:toastStatus={$toastStatus}
+	divClass="rounded-[8px] border border-gray-200 bg-white p-4 min-w-[300px] shadow-sm"
+>
+	{$message}
+</Toast>
