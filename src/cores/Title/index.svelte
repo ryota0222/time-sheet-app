@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1';
-	export let titleClass: string | undefined = '';
+	export let titleClass: string | undefined = 'mb-6';
 
 	let fontSize: string;
 
@@ -26,10 +26,6 @@
 	}
 </script>
 
-<svelte:element
-	this={tag}
-	title="Home | Time Sheet"
-	class={`${fontSize} font-bold mb-6 ${titleClass}`}
->
+<svelte:element this={tag} title="Home | Time Sheet" class={`${fontSize} font-bold ${titleClass}`}>
 	<slot />
 </svelte:element>
