@@ -69,7 +69,9 @@
 			{/each}
 		</ul>
 	{:else}
-		<p>No projects</p>
+		<div class="p-8 bg-slate-50 mt-6">
+			<p>プロジェクトがありません。</p>
+		</div>
 	{/if}
 </section>
 
