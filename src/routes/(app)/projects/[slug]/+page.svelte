@@ -70,7 +70,7 @@
 		/>
 		<AppTextInput
 			id="number"
-			name="number"
+			name="price"
 			placeholder=""
 			required
 			bind:value={$form.price}
