@@ -16,8 +16,8 @@
 		>{totalIncome.toLocaleString()}<span class="text-base inline-block ml-1">円</span></span
 	>
 	<div class="flex justify-between">
-		{#each monthlyIncomePerProject as project, idx (project.id)}
-			<div>
+		{#each monthlyIncomePerProject as project (project.id)}
+			<div style={`width: ${100 / monthlyIncomePerProject.length}%`}>
 				<div class="flex items-center gap-2 mb-1 text-sm">
 					<div
 						class="w-[12px] h-[12px] rounded-[4px]"
