@@ -1,0 +1,31 @@
+name: Test codes
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+job:
+  Tests:
+    name: Run unit test
+    if: |
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run unit test
+        run: npm run test:unit
