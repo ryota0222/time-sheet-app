@@ -7,6 +7,7 @@ import { MessageStatus, type IDatabaseUser, type Message } from '../../../types'
 import { lucia } from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import type { PageLoad } from '../../(app)/$types';
+import type { Actions } from './$types';
 
 const schema = zod(loginSchema);
 
@@ -15,7 +16,7 @@ export const load: PageLoad = async () => {
 	return { form };
 };
 
-export const actions = {
+export const actions: Actions = {
 	default: async ({ request, cookies }) => {
 		const data = await request.formData();
 		const form = await superValidate<Infer<typeof loginSchema>, Message>(data, schema);
