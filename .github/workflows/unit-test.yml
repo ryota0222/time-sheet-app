@@ -3,11 +3,13 @@ name: Unit Test codes
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   run-tests:
-    name: Run unit test
+    name: Run vitest test
     if: |
       github.event.pull_request.draft == false
     runs-on: ubuntu-latest
