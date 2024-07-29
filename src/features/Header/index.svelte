@@ -2,9 +2,9 @@
 	import logo from '$lib/images/logo.svg';
 	import { Button } from 'flowbite-svelte';
 	import NavItem from './components/NavItem.svelte';
-	import { page } from '$app/stores';
 
 	export let username: string | undefined = '';
+	export let pathname: string;
 </script>
 
 <header class="px-6 flex items-center justify-between h-16">
@@ -16,12 +16,12 @@
 			</div>
 		</a>
 
-		{#if $page.url.pathname !== '/login'}
-			<nav class="flex gap-4">
+		{#if pathname !== '/login'}
+			<nav class="flex gap-4" data-testid="nav-list">
 				<ul class="flex">
-					<NavItem path="/" name="Home" />
-					<NavItem path="/projects" name="Projects" />
-					<NavItem path="/calendar" name="Calendar" />
+					<NavItem pathname="/" name="Home" currentPathname={pathname} />
+					<NavItem pathname="/projects" name="Projects" currentPathname={pathname} />
+					<NavItem pathname="/calendar" name="Calendar" currentPathname={pathname} />
 				</ul>
 			</nav>
 		{/if}
@@ -31,7 +31,10 @@
 			<Avatar size="sm" />
 			<span>{username}</span>
 		</div> -->
-		<Button href="/logout" type="submit" color="red">ログアウト</Button>
+		<div class="flex items-center gap-4">
+			<span>{username}</span>
+			<Button href="/logout" type="submit" color="red">ログアウト</Button>
+		</div>
 	{/if}
 </header>
 

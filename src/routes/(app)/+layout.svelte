@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Header from '../../features/Header/index.svelte';
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
+	import { page } from '$app/stores';
 
 	export let data;
 </script>
 
-<Header username={data.user.username} />
+<Header username={data.user.username} pathname={$page.url.pathname} />
 
 <main class="container mx-auto">
 	<slot />
