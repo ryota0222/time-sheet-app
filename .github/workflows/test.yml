@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 job:
-  Unit Tests:
+  tests:
     name: Run unit test
     if: |
       github.event.pull_request.draft == false
