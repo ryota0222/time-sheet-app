@@ -8,7 +8,6 @@ export const useToast = () => {
 	let counter = DEFAULT_TIMEOUT;
 
 	function trigger(value: string) {
-		console.log('trigger');
 		toastStatus.set(true);
 		counter = DEFAULT_TIMEOUT;
 		message.set(value);
