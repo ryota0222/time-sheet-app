@@ -1,4 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import { type PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
 	webServer: {
@@ -6,7 +6,22 @@ const config: PlaywrightTestConfig = {
 		port: 4173
 	},
 	testDir: 'tests',
-	testMatch: /(.+\.)?(test|spec)\.[jt]s/
+	retries: process.env.CI ? 2 : 0,
+	forbidOnly: !!process.env.CI,
+	workers: process.env.CI ? 1 : undefined,
+	fullyParallel: true,
+	testMatch: /(.+\.)(playwright)\.[jt]s/,
+	reporter: 'html',
+	use: {
+		trace: 'on-first-retry',
+		video: 'retain-on-failure'
+	},
+	projects: [
+		{
+			name: 'chromium',
+			use: { ...devices['Desktop Chrome'] }
+		}
+	]
 };
 
 export default config;
