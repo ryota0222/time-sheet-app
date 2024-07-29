@@ -21,6 +21,13 @@
 					trigger(form.message.text);
 				}
 			}
+		},
+		onChange: (event) => {
+			const startDate = event.get('startDate');
+			console.log(event);
+			if (startDate) {
+				event.set('endDate', startDate);
+			}
 		}
 	});
 
@@ -28,11 +35,15 @@
 		value: project.id,
 		name: project.name
 	}));
+
+	$: if ($form.startDate) {
+		console.log($form.startDate);
+		$form.endDate = $form.startDate;
+	}
 </script>
 
 <svelte:head>
 	<title>Home | Time Sheet</title>
-	<script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js" defer></script>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

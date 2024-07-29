@@ -14,13 +14,17 @@
 <Label>
 	{label}
 	<div class="mt-2 relative max-w-[120px]">
-		<div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+		<div
+			class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none my-1 mr-1 bg-white"
+		>
 			<img src={calendar} alt="clock" width={16} height={16} />
 		</div>
 		<input
-			datepicker
-			type="text"
-			class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+			type="date"
+			class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg
+			focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+			dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
+			dark:focus:border-blue-500"
 			{placeholder}
 			{id}
 			bind:value
