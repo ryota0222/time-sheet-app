@@ -1,9 +1,12 @@
-name: Test codes
+name: Unit Test codes
+
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
 job:
-  Tests:
+  Unit Tests:
     name: Run unit test
     if: |
       github.event.pull_request.draft == false
@@ -27,5 +30,5 @@ job:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run unit test
+      - name: Run unit tests
         run: npm run test:unit
