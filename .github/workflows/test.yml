@@ -5,7 +5,7 @@ on:
     types: [opened, reopened, synchronize]
   workflow_dispatch:
 
-job:
+jobs:
   tests:
     name: Run unit test
     if: |
