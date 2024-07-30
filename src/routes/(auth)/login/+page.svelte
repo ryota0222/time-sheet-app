@@ -19,7 +19,9 @@
 	<Title>Login</Title>
 
 	{#if $message}
-		<span class="text-red-500 mt-1 mb-4 block">{$message.text}</span>
+		<span class="text-red-500 mt-1 mb-4 block" role="alert" aria-live="assertive"
+			>{$message.text}</span
+		>
 	{/if}
 
 	<form method="POST" use:enhance>
@@ -35,7 +37,7 @@
 				required
 			/>
 			{#if $errors.username}
-				<span class="text-red-500 mt-1 mb-4 block">{$errors.username?.[0]}</span>
+				<span class="text-red-500 mt-1 mb-4 block" aria-live="polite">{$errors.username?.[0]}</span>
 			{/if}
 		</div>
 
@@ -52,7 +54,7 @@
 				required
 			/>
 			{#if $errors.username}
-				<span class="text-red-500 mt-1 mb-4 block">{$errors.password?.[0]}</span>
+				<span class="text-red-500 mt-1 mb-4 block" aria-live="polite">{$errors.password?.[0]}</span>
 			{/if}
 		</div>
 

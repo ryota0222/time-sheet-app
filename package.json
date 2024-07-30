@@ -5,6 +5,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"build:test": "NODE_ENV=test vite build",
 		"test": "npm run test:integration && npm run test:unit",
 		"postinstall": "prisma generate",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
