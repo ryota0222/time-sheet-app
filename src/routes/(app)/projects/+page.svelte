@@ -4,9 +4,8 @@
 	import ColorPicker from 'svelte-awesome-color-picker';
 	import { invalidate } from '$app/navigation';
 	import Title from '../../../cores/Title/index.svelte';
-	import clock from '$lib/images/clock.svg';
-	import coins from '$lib/images/coins.svg';
 	import AppTextInput from '../../../cores/Form/AppTextInput.svelte';
+	import ProjectListItem from '../../../features/Project/ProjectListItem/index.svelte';
 
 	export let data;
 	const { form, enhance, submitting } = superForm(data.form, {
@@ -41,30 +40,7 @@
 		<ul>
 			{#each data.projects as project (project.id)}
 				<li class="my-4">
-					<a href={`/projects/${project.id}`} data-sveltekit-preload-data>
-						<section
-							class="p-6 rounded-md bg-slate-50 border border-slate-50 hover:border-slate-300"
-						>
-							<div class="flex items-center gap-4">
-								<span
-									role="presentation"
-									class="w-6 h-6 rounded-md inline-block"
-									style={`background-color: ${project.color}`}
-								/>
-								<Title tag="h3" titleClass="mb-0">{project.name}</Title>
-							</div>
-							<div class="flex items-center gap-2 mb-1 text-sm mt-8">
-								<img src={clock} alt="clock" />
-								<span class="inline-block w-12">単価</span>
-								<span>{project.price.toLocaleString()}円</span>
-							</div>
-							<div class="flex items-center gap-2 mb-1 text-sm mt-2">
-								<img src={coins} alt="coins" />
-								<span class="inline-block w-12">税込</span>
-								<span>{project.tax ? 'あり' : 'なし'}</span>
-							</div>
-						</section>
-					</a>
+					<ProjectListItem {...project} />
 				</li>
 			{/each}
 		</ul>
