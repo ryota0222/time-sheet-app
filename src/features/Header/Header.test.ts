@@ -26,3 +26,9 @@ test('ログイン時はログアウトボタンを描画する', async () => {
 	const logoutButton = screen.getByText('ログアウト');
 	expect(logoutButton).toBeDefined();
 });
+
+test('アクティブなパスのナビゲーションがアクティブになる', () => {
+	render(Header, { username: 'John Doe', pathname: '/' });
+	const activeNav = screen.getByTestId('Home');
+	expect(activeNav.getAttribute('aria-current')).toContain('page');
+});

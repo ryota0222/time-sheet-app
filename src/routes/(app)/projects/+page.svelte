@@ -41,7 +41,7 @@
 		<ul>
 			{#each data.projects as project (project.id)}
 				<li class="my-4">
-					<a href={`/projects/${project.id}`}>
+					<a href={`/projects/${project.id}`} data-sveltekit-preload-data>
 						<section
 							class="p-6 rounded-md bg-slate-50 border border-slate-50 hover:border-slate-300"
 						>
