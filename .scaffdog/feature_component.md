@@ -1,16 +1,17 @@
 ---
-name: 'feature-component'
+name: 'feature components'
 root: '.'
 output: '.'
 questions:
   name: 'Please enter a feature component name.'
-  parent: 'Enter parent name（Can skip）',
+  parent:
+    message: 'Enter parent name（Can skip）'
   test:
     confirm: 'Do you need a unit test?'
     initial: true
 ---
 
-# `src/cores/{{ inputs.parent }}/{{ inputs.name | pascal }}/index.svelte`
+# `src/features/{{ inputs.parent }}/{{ inputs.name | pascal }}/index.svelte`
 
 ```
 <script lang="ts">
@@ -20,7 +21,7 @@ questions:
 </div>
 ```
 
-# `src/{{ !inputs.test && '!' }}cores/{{ inputs.parent }}/{{ inputs.name | pascal }}/{{ inputs.name | pascal }}.test.ts`
+# `{{ !inputs.test && '!' }}src/features/{{ inputs.parent | pascal }}/{{ inputs.name | pascal }}/{{ inputs.name | pascal }}.test.ts`
 
 ```typescript
 import { render, screen } from '@testing-library/svelte';
