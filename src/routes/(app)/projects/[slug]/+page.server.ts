@@ -14,25 +14,37 @@ export const load: PageServerLoad = async ({ locals, depends, params }) => {
 	const userId = locals.user?.id;
 	if (userId) {
 		// project詳細を取得
-		const result = await db.project.findUnique({
+		const project = await db.project.findUnique({
 			where: {
 				userId,
 				id: params.slug
 			}
 		});
+		// 今月の稼働を取得
+		const works = await db.work.findMany({
+			where: {
+				userId,
+				projectId: params.slug,
+				startDateTime: {
+					gte: dayjs().startOf('month').toDate(),
+					lte: dayjs().endOf('month').toDate()
+				},
+				deletedAt: null
+			}
+		});
 		const form = await superValidate<Infer<typeof registerProjectSchema>, Message>(
 			{
-				name: result?.name || '',
-				color: result?.color || '#000000',
-				tax: result?.tax === 0 ? 0 : 1,
-				price: result?.price || 0
+				name: project?.name || '',
+				color: project?.color || '#000000',
+				tax: project?.tax === 0 ? 0 : 1,
+				price: project?.price || 0
 			},
 			schema
 		);
-		return { project: result, form };
+		return { project, form, works };
 	}
 	const form = await superValidate<Infer<typeof registerProjectSchema>, Message>(schema);
-	return { project: null, form };
+	return { project: null, form, works: [] };
 };
 
 export const actions: Actions = {

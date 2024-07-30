@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Button, Input, Label, NumberInput, Radio, Toast } from 'flowbite-svelte';
+	import {
+		Button,
+		Label,
+		Radio,
+		Toast,
+		Table,
+		TableHead,
+		TableHeadCell,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow
+	} from 'flowbite-svelte';
 	import ColorPicker from 'svelte-awesome-color-picker';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { MessageStatus } from '../../../../types/index.js';
@@ -9,6 +20,8 @@
 	import AppTextInput from '../../../../cores/Form/AppTextInput.svelte';
 	import { slide } from 'svelte/transition';
 	import { useToast } from '$lib/toast.js';
+	import dayjs from '$lib/dayjs';
+
 	export let data;
 
 	const { trigger, toastStatus, message } = useToast();
@@ -72,6 +85,7 @@
 			disabled={$submitting}
 			label="名前"
 			inputClass="w-full"
+			inputContainerClass="w-full"
 		/>
 		<AppTextInput
 			id="number"
@@ -106,6 +120,33 @@
 			<Button type="submit" disabled={$submitting} color="dark" class="w-24">更新</Button>
 		</div>
 	</form>
+	<div class="mt-16">
+		<Title tag="h3">今月の稼働一覧</Title>
+		{#if data?.works?.length}
+			<div class="border border-slate-200 rounded-lg overflow-hidden">
+				<Table striped={true}>
+					<TableHead>
+						<TableHeadCell>開始日時</TableHeadCell>
+						<TableHeadCell>終了日時</TableHeadCell>
+						<TableHeadCell>登録日</TableHeadCell>
+					</TableHead>
+					<TableBody tableBodyClass="divide-y">
+						{#each data.works as work (work.id)}
+							<TableBodyRow>
+								<TableBodyCell>{dayjs(work.startDateTime).utc().format('M/D HH:mm')}</TableBodyCell>
+								<TableBodyCell>{dayjs(work.endDateTime).utc().format('M/D HH:mm')}</TableBodyCell>
+								<TableBodyCell>
+									{dayjs(work.createdAt).format('M/D HH:mm')}
+								</TableBodyCell>
+							</TableBodyRow>
+						{/each}
+					</TableBody>
+				</Table>
+			</div>
+		{:else}
+			<p>今月の稼働はありません</p>
+		{/if}
+	</div>
 </section>
 
 <Toast
