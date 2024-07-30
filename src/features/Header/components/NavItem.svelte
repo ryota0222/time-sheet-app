@@ -12,6 +12,7 @@
 </script>
 
 <li
+	data-testid={name}
 	aria-current={active ? 'page' : undefined}
 	class={active ? 'border-b-4 border-b-slate-500' : undefined}
 >

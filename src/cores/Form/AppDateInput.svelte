@@ -13,7 +13,7 @@
 
 <Label>
 	{label}
-	<div class="mt-2 relative max-w-[120px]">
+	<div class="mt-2 relative max-w-[160px]">
 		<div
 			class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none my-1 mr-1 bg-white"
 		>

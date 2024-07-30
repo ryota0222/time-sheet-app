@@ -26,6 +26,6 @@
 	}
 </script>
 
-<svelte:element this={tag} title="Home | Time Sheet" class={`${fontSize} font-bold ${titleClass}`}>
+<svelte:element this={tag} class={`${fontSize} font-bold ${titleClass}`}>
 	<slot />
 </svelte:element>

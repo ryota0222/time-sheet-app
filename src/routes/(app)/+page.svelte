@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Toast } from 'flowbite-svelte';
 	import ThisMonthIncomeInfo from '../../features/Income/ThisMonthIncomeInfo/index.svelte';
+	import IncomeCalculator from '../../features/Income/IncomeCalculator/index.svelte';
 	import AppSelect from '../../cores/Form/AppSelect.svelte';
 	import AppDateInput from '../../cores/Form/AppDateInput.svelte';
 	import AppTimeInput from '../../cores/Form/AppTimeInput.svelte';
@@ -8,6 +9,7 @@
 	import Title from '../../cores/Title/index.svelte';
 	import { slide } from 'svelte/transition';
 	import { useToast } from '$lib/toast';
+	import dayjs from '$lib/dayjs';
 
 	export let data;
 
@@ -24,7 +26,6 @@
 		},
 		onChange: (event) => {
 			const startDate = event.get('startDate');
-			console.log(event);
 			if (startDate) {
 				event.set('endDate', startDate);
 			}
@@ -36,10 +37,32 @@
 		name: project.name
 	}));
 
-	$: if ($form.startDate) {
-		console.log($form.startDate);
-		$form.endDate = $form.startDate;
-	}
+	const getProject = (id: string) => {
+		return data.projects.find((project) => project.id === id);
+	};
+
+	const getWorkTime = ({
+		startDate,
+		startTime,
+		endDate,
+		endTime
+	}: {
+		startDate?: Date;
+		startTime?: string;
+		endDate?: Date;
+		endTime?: string;
+	}) => {
+		if (!startDate || !startTime || !endDate || !endTime) {
+			return 0;
+		}
+		const start = dayjs(`${startDate} ${startTime}`);
+		const end = dayjs(`${endDate} ${endTime}`);
+		if (end.isBefore(start)) {
+			return 0;
+		}
+		// 少数第2位まで表示
+		return Math.round((end.diff(start, 'minute') / 60) * 100) / 100;
+	};
 </script>
 
 <svelte:head>
@@ -127,8 +150,20 @@
 					</div>
 				</div>
 			</div>
-			<div class="mt-4 flex justify-end">
-				<Button disabled={$submitting} type="submit" color="dark">登録</Button>
+			<div class="mt-8 flex justify-between items-end">
+				<IncomeCalculator
+					tax={getProject($form.projectId)?.tax || 0}
+					cost={getProject($form.projectId)?.price}
+					workTime={getWorkTime({
+						startDate: $form.startDate,
+						startTime: $form.startTime,
+						endDate: $form.endDate,
+						endTime: $form.endTime
+					})}
+				/>
+				<div>
+					<Button disabled={$submitting} type="submit" color="dark">登録</Button>
+				</div>
 			</div>
 		</form>
 	</div>
