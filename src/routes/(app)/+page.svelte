@@ -24,7 +24,6 @@
 		},
 		onChange: (event) => {
 			const startDate = event.get('startDate');
-			console.log(event);
 			if (startDate) {
 				event.set('endDate', startDate);
 			}
@@ -37,7 +36,6 @@
 	}));
 
 	$: if ($form.startDate) {
-		console.log($form.startDate);
 		$form.endDate = $form.startDate;
 	}
 </script>

@@ -51,8 +51,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 			}
 		});
 
-		console.log(works);
-
 		for (const work of works) {
 			const project = result.find((project) => project.id === work.projectId);
 			if (project) {

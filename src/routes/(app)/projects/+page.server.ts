@@ -53,7 +53,6 @@ export const actions: Actions = {
 					price: form.data.price
 				}
 			});
-			console.log('create');
 			return message(form, {
 				text: 'プロジェクトを登録しました',
 				status: MessageStatus.success
