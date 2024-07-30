@@ -5,6 +5,7 @@ import { MessageStatus, type Message } from '../../../../types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/server/db';
 import { fail } from '@sveltejs/kit';
+import dayjs from '$lib/dayjs';
 
 const schema = zod(registerProjectSchema);
 
@@ -83,7 +84,7 @@ export const actions: Actions = {
 					id: params.slug
 				},
 				data: {
-					deletedAt: new Date()
+					deletedAt: dayjs().toDate()
 				}
 			});
 			return message(form, {

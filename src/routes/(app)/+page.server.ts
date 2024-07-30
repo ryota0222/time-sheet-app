@@ -5,7 +5,7 @@ import { zod, type Infer } from 'sveltekit-superforms/adapters';
 import type { PageServerLoad } from './$types';
 import { MessageStatus, type Message } from '../../types';
 import { db } from '$lib/server/db';
-import dayjs from 'dayjs';
+import dayjs from '$lib/dayjs';
 
 // since there's no dynamic data here, we can prerender
 // it so that it gets served as a static asset in production
@@ -38,9 +38,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 		});
 
 		// 今月のworkを全て取得
-		const now = new Date();
-		const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-		const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+		const now = dayjs();
+		const startOfMonth = now.startOf('month').toDate();
+		const endOfMonth = now.endOf('month').toDate();
 		const works = await db.work.findMany({
 			where: {
 				userId,
@@ -50,6 +50,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 				}
 			}
 		});
+
+		console.log(works);
 
 		for (const work of works) {
 			const project = result.find((project) => project.id === work.projectId);
@@ -111,11 +113,11 @@ export const actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-		const startDateTime = dayjs(form.data.startDate).add(1, 'day').toDate();
+		const startDateTime = dayjs(form.data.startDate).toDate();
 		const [startHours, startMinutes] = form.data.startTime.split(':').map(Number);
 		startDateTime.setUTCHours(startHours);
 		startDateTime.setUTCMinutes(startMinutes);
-		const endDateTime = dayjs(form.data.endDate).add(1, 'day').toDate();
+		const endDateTime = dayjs(form.data.endDate).toDate();
 		const [endHours, endMinutes] = form.data.endTime.split(':').map(Number);
 		endDateTime.setUTCHours(endHours);
 		endDateTime.setUTCMinutes(endMinutes);
