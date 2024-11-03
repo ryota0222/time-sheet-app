@@ -10,8 +10,12 @@
 	import { slide } from 'svelte/transition';
 	import { useToast } from '$lib/toast';
 	import dayjs from '$lib/dayjs';
+	import { goto, invalidate } from '$app/navigation';
+	import type { Dayjs } from 'dayjs';
 
 	export let data;
+
+	let targetMonth = dayjs().startOf('month');
 
 	const { trigger, toastStatus, message } = useToast();
 
@@ -63,6 +67,21 @@
 		// 少数第2位まで表示
 		return Math.round((end.diff(start, 'minute') / 60) * 100) / 100;
 	};
+
+	const updateTargetMonth = (newMonth: Dayjs) => {
+		targetMonth = newMonth;
+		const monthString = targetMonth.format('YYYY-MM'); // クエリパラメータ用にフォーマット
+		goto(`/?tm=${monthString}`, { replaceState: true }); // ページをリロードせずクエリを更新
+	};
+
+	// ボタンなどで targetMonth を更新する例
+	function goToPreviousMonth() {
+		updateTargetMonth(targetMonth.subtract(1, 'month'));
+	}
+
+	function goToNextMonth() {
+		updateTargetMonth(targetMonth.add(1, 'month'));
+	}
 </script>
 
 <svelte:head>
@@ -71,7 +90,54 @@
 </svelte:head>
 
 <section class="mt-10">
-	<Title tag="h2">今月の収入</Title>
+	<div class="flex items-center gap-4 mb-4">
+		<Title tag="h2" titleClass="mb-0"
+			>{targetMonth.isSame(dayjs(), 'month')
+				? '今月'
+				: `${targetMonth.format('YYYY年M月')}`}の収入</Title
+		>
+		<Button pill={true} class="p-1.5" outline color="dark" size="sm" on:click={goToPreviousMonth}>
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					fill-rule="evenodd"
+					clip-rule="evenodd"
+					d="M16.1705 4.4545C16.6098 4.89384 16.6098 5.60616 16.1705 6.0455L10.216 12L16.1705 17.9545C16.6098 18.3938 16.6098 19.1062 16.1705 19.5455C15.7312 19.9848 15.0188 19.9848 14.5795 19.5455L7.8295 12.7955C7.39017 12.3562 7.39017 11.6438 7.8295 11.2045L14.5795 4.4545C15.0188 4.01517 15.7312 4.01517 16.1705 4.4545Z"
+					fill="currentColor"
+				/>
+			</svg>
+		</Button>
+		<Button
+			disabled={targetMonth.isSame(dayjs(), 'month')}
+			pill={true}
+			class="p-1.5"
+			outline
+			color="dark"
+			size="sm"
+			on:click={goToNextMonth}
+		>
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				class="rotate-180"
+			>
+				<path
+					fill-rule="evenodd"
+					clip-rule="evenodd"
+					d="M16.1705 4.4545C16.6098 4.89384 16.6098 5.60616 16.1705 6.0455L10.216 12L16.1705 17.9545C16.6098 18.3938 16.6098 19.1062 16.1705 19.5455C15.7312 19.9848 15.0188 19.9848 14.5795 19.5455L7.8295 12.7955C7.39017 12.3562 7.39017 11.6438 7.8295 11.2045L14.5795 4.4545C15.0188 4.01517 15.7312 4.01517 16.1705 4.4545Z"
+					fill="currentColor"
+				/>
+			</svg>
+		</Button>
+	</div>
 	<ThisMonthIncomeInfo
 		totalIncome={data.monthly_income.total_income}
 		projects={data.projects}

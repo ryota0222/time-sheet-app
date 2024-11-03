@@ -13,7 +13,7 @@ import dayjs from '$lib/dayjs';
 
 const schema = zod(registerWorkTimeSchema);
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
 	const form = await superValidate<Infer<typeof registerWorkTimeSchema>, Message>(
 		{
 			projectId: '',
@@ -37,10 +37,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 			}
 		});
 
-		// 今月のworkを全て取得
-		const now = dayjs();
-		const startOfMonth = now.startOf('month').toDate();
-		const endOfMonth = now.endOf('month').toDate();
+		// 対象の月のworkを全て取得
+		const targetMonth = dayjs(
+			url.searchParams.get('tm') || dayjs().startOf('month').format('YYYY-MM')
+		);
+		const startOfMonth = targetMonth.startOf('month').toDate();
+		const endOfMonth = targetMonth.endOf('month').toDate();
 		const works = await db.work.findMany({
 			where: {
 				userId,

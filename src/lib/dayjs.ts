@@ -6,4 +6,6 @@ import dayjs from 'dayjs';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+dayjs.tz.setDefault('Asia/Tokyo');
+
 export default dayjs;
